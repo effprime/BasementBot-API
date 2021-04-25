@@ -49,7 +49,7 @@ async def describe():
 
 @app.route("/config", methods=["GET", "PUT"])
 async def config():
-    """Runs a config request."""
+    """Runs a config request on the bot."""
     guild_id = quart.request.args.get("guild_id")
 
     if quart.request.method == "GET":
@@ -69,14 +69,14 @@ async def config():
 
 @app.route("/plugin/status")
 async def plugin_status():
-    """Runs a describe request on the bot."""
+    """Runs a plugin status request on the bot."""
     response = await ipc.request("get_plugin_status")
     return response
 
 
 @app.route("/plugin/<action>/<plugin_name>")
 async def plugin_action(action, plugin_name):
-    """Runs a plugin action on a plugin."""
+    """Runs a plugin action request on the bot."""
     # clever girl
     response = await ipc.request(f"{action}_plugin", plugin_name=plugin_name)
     return response

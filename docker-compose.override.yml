@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+    basement_bot_api:
+        image: effprime/basement-bot-api:dev
+        environment:
+            - DEBUG=1
+        volumes:
+            - ./:/var/app
+        network_mode: host

@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    basement_bot_api:
+        image: ${BASEMENT_BOT_API_IMAGE_TAG:-effprime/basement-bot-api:prod}
+        container_name: ${BASEMENT_BOT_API_CONTAINER_NAME:-basement_bot_api}
+        environment:
+            - DEBUG=0
+            - IPC_SECRET=${IPC_SECRET}
+        restart: always
+        stop_signal: SIGINT
+        ports:
+            - ${API_PORT:-81}:81

@@ -1,0 +1,16 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "==20.8b1"
+isort = "*"
+pylint = "*"
+
+[packages]
+quart = "==0.14.1"
+discord-ext-ipc = "==2.0.0"
+
+[requires]
+python_version = "3.7"

@@ -6,7 +6,7 @@ services:
         container_name: ${BASEMENT_BOT_API_CONTAINER_NAME:-basement_bot_api}
         environment:
             - DEBUG=0
-            - IPC_SECRET=${IPC_SECRET}
+        env_file: .env
         restart: always
         stop_signal: SIGINT
         ports:

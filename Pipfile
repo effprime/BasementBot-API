@@ -10,6 +10,7 @@ pylint = "*"
 
 [packages]
 quart = "==0.14.1"
+"Quart-Cors" = "==0.4.0"
 discord-ext-ipc = "==2.0.0"
 
 [requires]

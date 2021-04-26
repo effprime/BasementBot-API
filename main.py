@@ -4,6 +4,7 @@
 import os
 
 import quart
+import quart_cors
 from discord.ext import ipc
 
 if not os.getenv("IPC_SECRET"):
@@ -29,7 +30,7 @@ class IPCClient(ipc.Client):
 
 
 ipc = IPCClient(secret_key=os.getenv("IPC_SECRET"))
-app = quart.Quart(__name__)
+app = quart_cors.cors(quart.Quart(__name__))
 app.response_class = JSONResponse
 
 

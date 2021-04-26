@@ -14,7 +14,7 @@ RUN pip install pipenv && \
     pip install --no-cache-dir -r /tmp/requirements.txt && \
     pip install --no-cache-dir -r /tmp/requirements-dev.txt
 
-WORKDIR /var/app
+WORKDIR /var/api
 COPY . .
 
-CMD python3 -u main.py
+CMD python3 -u app/main.py

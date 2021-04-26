@@ -12,11 +12,11 @@ RUN pip install pipenv && \
     cd /tmp && pipenv lock --requirements > requirements.txt && \
     pip install --no-cache-dir -r /tmp/requirements.txt
 
-WORKDIR /var/app
+WORKDIR /var/api
 COPY . .
 
 FROM python:3.7-alpine
 WORKDIR /var/app
 COPY --from=builder /usr/local /usr/local
-COPY --from=builder /var/app .
-CMD python3 -u main.py
+COPY --from=builder /var/api .
+CMD python3 -u app/main.py

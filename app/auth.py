@@ -4,6 +4,7 @@
 import os
 
 import quart
+import quart_cors
 import quart_jwt_extended as jwt
 
 api_password = os.getenv("API_PASSWORD")
@@ -11,9 +12,10 @@ if not api_password:
     raise RuntimeError("API_PASSWORD env not set")
 
 app = quart.Blueprint("auth", __name__)
+app = quart_cors.cors(app)
 
 
-@app.route("/auth/login", methods=["POST"])
+@app.route("/login", methods=["POST"])
 async def login():
     """Gets a JWT token."""
     if not quart.request.is_json:
@@ -32,7 +34,7 @@ async def login():
     return {"token": access_token}, 200
 
 
-@app.route("/auth/refresh", methods=["POST"])
+@app.route("/refresh", methods=["POST"])
 @jwt.jwt_required
 async def refresh():
     """Refreshes a JWT token."""

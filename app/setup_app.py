@@ -4,12 +4,11 @@
 import os
 import traceback
 
+import auth
+import bot
 import quart
 import quart_cors
 import quart_jwt_extended as jwt
-
-import auth
-import bot
 import util
 
 app = quart.Quart(__name__)
@@ -20,8 +19,8 @@ app = quart_cors.cors(app)
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
 app.config["JWT_ERROR_MESSAGE_KEY"] = "error"
 
-app.register_blueprint(bot.app)
-app.register_blueprint(auth.app)
+app.register_blueprint(bot.app, url_prefix="/bot/")
+app.register_blueprint(auth.app, url_prefix="/auth/")
 
 jwt_manager = jwt.JWTManager(app)
 

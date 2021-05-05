@@ -1,21 +1,21 @@
 image = effprime/basement-bot-api
 dev-image = $(image):dev
 prod-image = $(image):prod
-drun = docker run --rm -v $(shell pwd):/var/app -t $(dev-image) python3 -m
+drun = docker run --rm -v $(shell pwd)/app:/var/api/app -t $(dev-image) python3 -m
 
 make sync:
 	python3 -m pipenv sync -d
 
 check-format:
-	$(drun) black --check .
-	$(drun) isort --check-only ./
+	$(drun) black --check app/
+	$(drun) isort --check-only app/
 
 format:
-	$(drun) black .
-	$(drun) isort ./
+	$(drun) black app/
+	$(drun) isort app/
 
 lint:
-	$(drun) pylint *.py
+	$(drun) pylint app/*.py
 
 test:
 	$(drun) pytest --disable-warnings

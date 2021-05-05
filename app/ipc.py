@@ -6,6 +6,7 @@ import os
 from discord.ext import ipc
 
 
+# pylint: disable=too-few-public-methods
 class IPCClient(ipc.Client):
     """Expanded IPC client."""
 
@@ -19,4 +20,27 @@ class IPCClient(ipc.Client):
 if not os.getenv("IPC_SECRET"):
     raise RuntimeError("IPC_SECRET env not found")
 
-ipc_client = IPCClient(secret_key=os.getenv("IPC_SECRET"))
+
+def get_client():
+    """Generates an IPC client."""
+    return IPCClient(secret_key=os.getenv("IPC_SECRET"))
+
+
+# pylint: disable=too-few-public-methods
+class SloppilyConcurrentIPCClient:
+    """Client for handling concurrent requests.
+
+    This implementation is required until discord-ext-ipc supports concurrency better.
+    """
+
+    async def request(self, *args, **kwargs):
+        """Makes an IPC request utilizing an ad-hoc client instance."""
+        client = get_client()
+        response, code = await client.request(*args, **kwargs)
+        await client.session.close()
+        return response, code
+
+
+# waiting on IPC clients to support concurrent requests
+# ipc_client = get_client()
+ipc_client = SloppilyConcurrentIPCClient()

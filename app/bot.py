@@ -1,22 +1,23 @@
 """Bot module.
 """
 
+import ipc
 import quart
+import quart_cors
 import quart_jwt_extended as jwt
 
-import ipc
-
 app = quart.Blueprint("bot", __name__)
+app = quart_cors.cors(app)
 
 
-@app.route("/bot/health")
+@app.route("/health")
 async def health():
     """Runs a health check request on the bot."""
     response = await ipc.ipc_client.request("health")
     return response
 
 
-@app.route("/bot/describe")
+@app.route("/describe")
 @jwt.jwt_required
 async def describe():
     """Runs a describe request on the bot."""
@@ -24,21 +25,22 @@ async def describe():
     return response
 
 
-@app.route("/bot/config", methods=["GET", "PUT"])
+@app.route("/config/main")
 @jwt.jwt_required
-async def config():
-    """Runs a config request on the bot."""
-    guild_id = quart.request.args.get("guild_id")
+async def main_config():
+    """Runs a main config request on the bot."""
+    response = await ipc.ipc_client.request("get_bot_config")
+    return response
 
+
+@app.route("/config/guild/<guild_id>", methods=["GET", "PUT"])
+@jwt.jwt_required
+async def guild_config(guild_id):
+    """Runs a guild config request on the bot."""
     if quart.request.method == "GET":
-        if guild_id:
-            response = await ipc.ipc_client.request(
-                "get_guild_config", guild_id=guild_id
-            )
-        else:
-            response = await ipc.ipc_client.request("get_bot_config")
+        response = await ipc.ipc_client.request("get_guild_config", guild_id=guild_id)
 
-    if quart.request.method == "PUT":
+    elif quart.request.method == "PUT":
         new_config = await quart.request.json
         response = await ipc.ipc_client.request(
             "edit_guild_config", guild_id=guild_id, new_config=new_config
@@ -47,7 +49,7 @@ async def config():
     return response
 
 
-@app.route("/bot/plugin/status")
+@app.route("/plugin/status")
 @jwt.jwt_required
 async def plugin_status():
     """Runs a plugin status request on the bot."""
@@ -55,10 +57,34 @@ async def plugin_status():
     return response
 
 
-@app.route("/bot/plugin/<action>/<plugin_name>")
+@app.route("/plugin/<action>/<plugin_name>")
 @jwt.jwt_required
 async def plugin_action(action, plugin_name):
     """Runs a plugin action request on the bot."""
     # clever girl
     response = await ipc.ipc_client.request(f"{action}_plugin", plugin_name=plugin_name)
+    return response
+
+
+@app.route("/guild/all")
+@jwt.jwt_required
+async def get_all_guilds():
+    """Runs a get all guilds request on the bot."""
+    response = await ipc.ipc_client.request("get_all_guilds")
+    return response
+
+
+@app.route("/guild/get/<guild_id>")
+@jwt.jwt_required
+async def get_guild(guild_id):
+    """Runs a get all guilds request on the bot."""
+    response = await ipc.ipc_client.request("get_guild", guild_id=guild_id)
+    return response
+
+
+@app.route("/guild/leave/<guild_id>")
+@jwt.jwt_required
+async def leave_guild(guild_id):
+    """Runs a get all guilds request on the bot."""
+    response = await ipc.ipc_client.request("leave_guild", guild_id=guild_id)
     return response

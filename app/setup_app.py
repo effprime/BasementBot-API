@@ -11,7 +11,7 @@ import quart_cors
 import quart_jwt_extended as jwt
 import util
 
-app = quart.Quart(__name__)
+app = quart.Quart("app")
 app.response_class = util.JSONResponse
 
 app = quart_cors.cors(app)

@@ -23,7 +23,8 @@ if not os.getenv("IPC_SECRET"):
 
 def get_client():
     """Generates an IPC client."""
-    return IPCClient(secret_key=os.getenv("IPC_SECRET"))
+    host = os.getenv("API_HOST") or "localhost"
+    return IPCClient(host=host, secret_key=os.getenv("IPC_SECRET"))
 
 
 # pylint: disable=too-few-public-methods

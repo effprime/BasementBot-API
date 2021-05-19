@@ -11,3 +11,10 @@ services:
         stop_signal: SIGINT
         ports:
             - ${API_PORT:-81}:81
+        networks:
+            - ipc
+            - default
+
+networks:
+    ipc:
+        external: true

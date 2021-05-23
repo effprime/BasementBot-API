@@ -7,4 +7,3 @@ services:
             - DEBUG=1
         volumes:
             - ./:/var/app
-        # network_mode: host

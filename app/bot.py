@@ -88,3 +88,25 @@ async def leave_guild(guild_id):
     """Runs a get all guilds request on the bot."""
     response = await ipc.ipc_client.request("leave_guild", guild_id=guild_id)
     return response
+
+
+@app.route("/echo/user", methods=["POST"])
+@jwt.jwt_required
+async def echo_user():
+    """Runs a echo user request on the bot."""
+    data = await quart.request.json
+    response = await ipc.ipc_client.request(
+        "echo_user", user_id=data.get("user_id"), message=data.get("message")
+    )
+    return response
+
+
+@app.route("/echo/channel", methods=["POST"])
+@jwt.jwt_required
+async def echo_channel():
+    """Runs an echo channel request on the bot."""
+    data = await quart.request.json
+    response = await ipc.ipc_client.request(
+        "echo_channel", channel_id=data.get("channel_id"), message=data.get("message")
+    )
+    return response

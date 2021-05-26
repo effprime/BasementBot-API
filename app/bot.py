@@ -53,7 +53,11 @@ async def guild_config(guild_id):
 @jwt.jwt_required
 async def plugin_status():
     """Runs a plugin status request on the bot."""
-    response = await ipc.ipc_client.request("get_plugin_status")
+    plugin_name = quart.request.args.get("name")
+    response = await ipc.ipc_client.request(
+        "get_plugin_status", plugin_name=plugin_name
+    )
+
     return response
 
 

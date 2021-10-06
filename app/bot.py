@@ -85,12 +85,14 @@ async def get_guild(guild_id):
     response = await ipc.ipc_client.request("get_guild", guild_id=guild_id)
     return response
 
+
 @app.route("/guild/get/<guild_id>/channels")
 @jwt.jwt_required
 async def get_guild_channels(guild_id):
     """Runs a get guild channels request on the bot."""
     response = await ipc.ipc_client.request("get_guild_channels", guild_id=guild_id)
     return response
+
 
 @app.route("/guild/leave/<guild_id>")
 @jwt.jwt_required

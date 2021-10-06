@@ -81,7 +81,7 @@ async def get_all_guilds():
 @app.route("/guild/get/<guild_id>")
 @jwt.jwt_required
 async def get_guild(guild_id):
-    """Runs a get all guilds request on the bot."""
+    """Runs a get guild request on the bot."""
     response = await ipc.ipc_client.request("get_guild", guild_id=guild_id)
     return response
 
@@ -89,8 +89,30 @@ async def get_guild(guild_id):
 @app.route("/guild/leave/<guild_id>")
 @jwt.jwt_required
 async def leave_guild(guild_id):
-    """Runs a get all guilds request on the bot."""
+    """Runs a leave guild request on the bot."""
     response = await ipc.ipc_client.request("leave_guild", guild_id=guild_id)
+    return response
+
+
+@app.route("/history/channel/<channel_id>")
+@jwt.jwt_required
+async def channel_history(channel_id):
+    """Runs a channel history request on the bot."""
+    limit = quart.request.args.get("limit")
+    response = await ipc.ipc_client.request(
+        "get_channel_message_history", channel_id=channel_id, limit=limit
+    )
+    return response
+
+
+@app.route("/history/dm/<user_id>")
+@jwt.jwt_required
+async def dm_history(user_id):
+    """Runs a dm history request on the bot."""
+    limit = quart.request.args.get("limit")
+    response = await ipc.ipc_client.request(
+        "get_dm_message_history", user_id=user_id, limit=limit
+    )
     return response
 
 

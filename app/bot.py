@@ -55,7 +55,7 @@ async def plugin_status():
     """Runs a plugin status request on the bot."""
     plugin_name = quart.request.args.get("name")
     response = await ipc.ipc_client.request(
-        "get_plugin_status", plugin_name=plugin_name
+        "get_extension_status", extension_name=plugin_name
     )
 
     return response
@@ -66,7 +66,7 @@ async def plugin_status():
 async def plugin_action(action, plugin_name):
     """Runs a plugin action request on the bot."""
     # clever girl
-    response = await ipc.ipc_client.request(f"{action}_plugin", plugin_name=plugin_name)
+    response = await ipc.ipc_client.request(f"{action}_extension", extension_name=plugin_name)
     return response
 
 

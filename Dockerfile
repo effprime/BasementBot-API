@@ -1,18 +1,18 @@
 
 FROM python:3.7-alpine as builder
 
-COPY Pipfile* /tmp/
-
 RUN apk update && \
     apk add --no-cache \
     gcc \
     musl-dev
 
+WORKDIR /var/api
+COPY Pipfile.lock .
+
 RUN pip install pipenv && \
-    cd /tmp && pipenv lock --requirements > requirements.txt && \
+    pipenv requirements --dev > /tmp/requirements.txt && \
     pip install --no-cache-dir -r /tmp/requirements.txt
 
-WORKDIR /var/api
 COPY . .
 
 FROM python:3.7-alpine
